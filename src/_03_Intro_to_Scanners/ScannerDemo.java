@@ -24,7 +24,7 @@ public class ScannerDemo {
          * Eclipse's console. This may change depending on the environment where
          * are running your program or the input/output stream you are using.
          */
-
+       Scanner test = new Scanner(System.in);
         
         
         /*
@@ -41,7 +41,8 @@ public class ScannerDemo {
          * Note: Don't forget to save the results of next() or nextLine() into a
          * String variable.
          */
-
+        System.out.println("What Is Your Name?");
+        String name = test.nextLine();
         
         
         /*
@@ -51,6 +52,8 @@ public class ScannerDemo {
          * See if you can find the scanner method that does this without relying
          * on Integer.parseInt().
          */
+        System.out.println("What Is Your Age?");
+         int age = test.nextInt();
 
         
         
@@ -63,8 +66,18 @@ public class ScannerDemo {
          */
 
         // 5.) Print the user's data to the console nicely formatted.
-
-        
+         System.out.println("Are You In The D.W.R Plan?");
+         boolean inPlan = test.nextBoolean();
+        System.out.println();
+        System.out.println();
+         for (int i = 0; i < 10; i++) {
+			System.out.println("Loading...");
+			
+		}
+         System.out.println("User Data:");
+         System.out.println("Name: "+name);
+         System.out.println("Age: "+age);
+         System.out.println("In The Debt Working Repayment Plan: "+inPlan);
         
         /*
          * 6.) Close your scanner to avoid memory leaks.
@@ -72,7 +85,7 @@ public class ScannerDemo {
          * Note: When using a Scanner with the System.in input stream in larger
          * programs only close the scanner when your program is completely done.
          */
-
+         test.close();
     }
 
 }
