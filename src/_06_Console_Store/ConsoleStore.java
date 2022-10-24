@@ -1,6 +1,16 @@
 package _06_Console_Store;
 
-public class ConsoleStore {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class ConsoleStore implements ActionListener {
 
     /*
      * Write a program that simulates shopping in a store using the Scanner and
@@ -35,9 +45,71 @@ public class ConsoleStore {
      * print out a receipt showing their name, the individual prices of the
      * items and their total.
      */
-
-    public static void main(String[] args) {
-
+	JFrame frame = new JFrame();
+	JPanel panel = new JPanel();
+	JPanel panel2 = new JPanel();
+	JButton addbutton = new JButton();
+	JButton removebutton = new JButton();
+	JButton viewbutton = new JButton();
+	JButton checkbutton = new JButton();
+    JTextField moneyDisplay = new JTextField();
+    ArrayList<NonFood> cart;
+    double money;
+    String name;
+    
+    protected void setup() {
+    	frame.setVisible(true);
+    	frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+    	frame.setTitle("Online Depot");
+    	frame.setSize(1050,250);
+    	frame.add(panel2);
+    	frame.add(panel);
+    	panel.add(moneyDisplay);
+    	panel.add(addbutton);
+    	panel.add(removebutton);
+    	panel.add(viewbutton);
+    	panel.add(checkbutton);
+    	money = 250.00;
+    	addbutton.addActionListener(this);
+    	removebutton.addActionListener(this);
+    	viewbutton.addActionListener(this);
+    	checkbutton.addActionListener(this);
+    	addbutton.setText("Add An Item To Your Cart");
+    	removebutton.setText("Remove And Item From Your Cart");
+    	viewbutton.setText("View Your Cart");
+    	checkbutton.setText("Proceed To Checkout");
+    	name = JOptionPane.showInputDialog("What Is Your Account Name?");
+    	moneyDisplay.setVisible(true);
+    	moneyDisplay.setEditable(false);
+    	moneyDisplay.setText("Your Account: "+ name+ "   Balance: $"+ money);
     }
+    public static void main(String[] args) {
+       ConsoleStore runner = new ConsoleStore();
+       runner.setup();
+    }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource().equals(addbutton)) {
+			
+		}
+		if(e.getSource().equals(removebutton)) {
+			
+		}
+		if(e.getSource().equals(viewbutton)) {
+			
+		}
+		if(e.getSource().equals(checkbutton)) {
+			
+		}
+	}
+	public double caclulateTax(NonFood obj) {
+		if(obj.getTotalPieceCount()>49) {
+		int rate = obj.getTotalPieceCount()/25;
+		return obj.getPrice()+rate*3;
+		}
+		else {
+			return obj.getPrice();
+		}
+	}
 
 }
