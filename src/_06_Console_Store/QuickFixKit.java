@@ -1,10 +1,10 @@
 package _06_Console_Store;
 
-public class BoxOfConnecters extends NonFood {
-   public BoxOfConnecters(){
-	   price = 45.65;
+public class QuickFixKit extends NonFood {
+   public QuickFixKit(){
+	   price = 45.99;
 	   pieceCount = 1250;
-	   item = "Box Of Connecters";
+	   item = "Quick Fix Kit";
    }
 	@Override
 	public double getPrice() {
@@ -14,6 +14,10 @@ public class BoxOfConnecters extends NonFood {
 	@Override
 	public int getTotalPieceCount() {
 		return pieceCount;
+	}
+	@Override
+	public String getItem() {
+		return item;
 	}
 
 }

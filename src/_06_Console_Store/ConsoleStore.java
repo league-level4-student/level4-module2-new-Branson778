@@ -2,13 +2,21 @@ package _06_Console_Store;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.Timer;
+
+import _02_Generics_Store.Cart;
 
 public class ConsoleStore implements ActionListener {
 
@@ -45,15 +53,22 @@ public class ConsoleStore implements ActionListener {
      * print out a receipt showing their name, the individual prices of the
      * items and their total.
      */
-	JFrame frame = new JFrame();
-	JPanel panel = new JPanel();
-	JPanel panel2 = new JPanel();
-	JButton addbutton = new JButton();
-	JButton removebutton = new JButton();
-	JButton viewbutton = new JButton();
-	JButton checkbutton = new JButton();
-    JTextField moneyDisplay = new JTextField();
-    ArrayList<NonFood> cart;
+	
+	//TODO Add Ternary Operators, Images, And Scanners
+	// To Add Scanners Make The Application Like a Beta And Use The Console To Message The User And Allow Them To Give Themselves More Money
+	// To Add Ternary Operators Simply Use The Input From The Scanner And Change It To Zero If The Money Is Illogical/Negative
+	//TODO Add Images By SHoing Them When Showing The Receipt
+	protected JFrame frame = new JFrame();
+	protected JPanel panel = new JPanel();
+	protected JPanel panel2 = new JPanel();
+	protected JButton addbutton = new JButton();
+	protected JButton removebutton = new JButton();
+	protected JButton viewbutton = new JButton();
+	protected JButton checkbutton = new JButton();
+	protected JTextField moneyDisplay = new JTextField(23);
+	protected Timer update = new Timer(1000/60,this);
+	protected Scanner input = new Scanner(System.in);
+    List<NonFood> cart;
     double money;
     String name;
     
@@ -61,7 +76,7 @@ public class ConsoleStore implements ActionListener {
     	frame.setVisible(true);
     	frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
     	frame.setTitle("Online Depot");
-    	frame.setSize(1050,250);
+    	frame.setSize(1050,150);
     	frame.add(panel2);
     	frame.add(panel);
     	panel.add(moneyDisplay);
@@ -78,38 +93,150 @@ public class ConsoleStore implements ActionListener {
     	removebutton.setText("Remove And Item From Your Cart");
     	viewbutton.setText("View Your Cart");
     	checkbutton.setText("Proceed To Checkout");
-    	name = JOptionPane.showInputDialog("What Is Your Account Name?");
+    	name = JOptionPane.showInputDialog("What Is Your Account Name?\n 10 Characters Maximum");
     	moneyDisplay.setVisible(true);
     	moneyDisplay.setEditable(false);
     	moneyDisplay.setText("Your Account: "+ name+ "   Balance: $"+ money);
+    	cart = new ArrayList<NonFood>();
+    	update.start();
     }
     public static void main(String[] args) {
        ConsoleStore runner = new ConsoleStore();
        runner.setup();
+       System.out.println("Thank You "+runner.name+" For Joining");
+       System.out.println("Welcome To The Online Depot Beta");
+       System.out.println("We Are Glad To Have You Test A Smaller Version Of Our New Store");
+       System.out.println("As This Is A Beta You Can Test All Elements For Bugs And Errors");
+       System.out.println("You Can Also Give Yourselves Fake Credits To Test With");
+       System.out.println("As For Adding Them Please Keep It Positive And Also Keep Decimals Short");
+       runner.betaMoneyAdd();
     }
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(addbutton)) {
-			
+			String[] options = {"Safety Helmet", "Tool Box", "Deluxe Tool Box", "Quick Fix Kit"};
+			int x = JOptionPane.showOptionDialog(null, "Choose An Item To Add", "Add Item To Cart", JOptionPane.INFORMATION_MESSAGE, 1, null, options, options[0]);
+			if(x==0) {
+				cart.add(new SafetyHelmet());
+			}
+			else if(x==1) {
+				cart.add(new ToolBox());
+			}
+			else if(x==2) {
+				cart.add(new DeluxeToolBox());
+			}
+			else if(x==3) {
+				cart.add(new QuickFixKit());
+			}
 		}
 		if(e.getSource().equals(removebutton)) {
-			
+			if(cart.size()>0) {
+				int index = 0;
+				String printout = "";
+						do{
+							printout = printout + cart.get(index).getItem()+": Item "+index+"\n";
+							index++;
+						}while(index<cart.size());
+						printout = printout+"Choose One Item To Remove (Using Item ID Number)";
+	       String remove = JOptionPane.showInputDialog(null, printout, "Remove Item From Cart", 1);
+	       int removeindex = Integer.parseInt(remove);
+	       cart.remove(removeindex);
+				}
+				else {
+					JOptionPane.showInternalMessageDialog(null, "Please Add Items To Your Cart Before Removing", "Cart Error", 0, null);
+				}
 		}
 		if(e.getSource().equals(viewbutton)) {
-			
+			if(cart.size()>0) {
+			int index = 0;
+			String printout = "";
+					do{
+						printout = printout + cart.get(index).getItem()+"\n";
+						index++;
+					}while(index<cart.size());
+        JOptionPane.showMessageDialog(null, printout, "Your Cart", 1, null);
+			}
+			else {
+				JOptionPane.showInternalMessageDialog(null, "Please Add Items To Your Cart Before Viewing", "Cart Error", 0, null);
+			}
 		}
 		if(e.getSource().equals(checkbutton)) {
-			
+if(cart.size()>0) {
+	int cancel = JOptionPane.showConfirmDialog(null, "Are You Sure To Check Out?", "Confirm", JOptionPane.OK_CANCEL_OPTION);
+	if(cancel==0) {
+			double total = 0.0;
+for (int i = 0; i < cart.size(); i++) {
+	total = total + cart.get(i).getPrice();
+}
+if(total>money) {
+	int index = 0;
+	String printout = "";
+	do{
+		printout = printout + cart.get(index).getItem()+": $"+cart.get(index).getPrice()+": Item "+index+"\n";
+		index++;
+	}while(index<cart.size());
+	printout = printout+"Choose One Item To Remove (Using Item ID Number)";
+	String remove = JOptionPane.showInputDialog(null, "Please Remove An Item To Balance Cost\n"+"Total Cost: "+total+"    Money: "+money+"\n"+printout, "Cart Error", 0);
+	 int removeindex = Integer.parseInt(remove);
+     cart.remove(removeindex);
+     JOptionPane.showInternalMessageDialog(null, "Please Check Out Again", "Item Removal Finishing", 0, null);
+}
+else {
+	money = money-total;
+	int index = 0;
+	String printout = "";
+	do{
+		printout = printout + cart.get(index).getItem()+": $"+cart.get(index).getPrice()+"\n";
+		index++;
+	}while(index<cart.size());
+	String formMoney = String.format("%.2f", money);
+	String formTotal = String.format("%.2f", total);
+	printout= "Receipt\n"+printout+"Total Cost: "+formTotal+"\nRemaining Balance: "+formMoney+"\nAccount Name: "+name+"\nThank You For Shopping At Online Depot\nHave A Great Day!";
+	JOptionPane.showMessageDialog(null, printout);
+	cart.removeAll(cart);
+	money=Double.parseDouble(formMoney);
+}
+	}
+	else {
+		
+	}
+}
+else {
+	JOptionPane.showInternalMessageDialog(null, "Please Add Items To Your Cart Before Buying", "Cart Error", 0, null);
+}
+		}
+		if(e.getSource().equals(update)){
+			moneyDisplay.setText("Your Account: "+ name+ "   Balance: $"+ money);
 		}
 	}
-	public double caclulateTax(NonFood obj) {
-		if(obj.getTotalPieceCount()>49) {
-		int rate = obj.getTotalPieceCount()/25;
-		return obj.getPrice()+rate*3;
-		}
-		else {
-			return obj.getPrice();
-		}
+	protected void betaMoneyAdd() {
+		System.out.println("How Much Money Do You Want To Add?");
+		double add = input.nextDouble();
+		add=add<0.0 ? 0 : add;
+		String formAdd = String.format("%.2f", add);
+		add= Double.parseDouble(formAdd);
+		money = money + add;
+		System.out.println("");
+		betaMoneyAdd();
 	}
+    @SuppressWarnings("rawtypes")
+    public static ImageIcon loadImage(String fileName) {
+        try {
+            return new ImageIcon(ImageIO
+                    .read(new Cart().getClass().getResourceAsStream("images/"+fileName)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+	//public double caclulateTax(NonFood obj) {
+	//	if(obj.getTotalPieceCount()>49) {
+	//	int rate = obj.getTotalPieceCount()/10;
+	//	return obj.getPrice()+rate;
+	//	}
+	//	else {
+	//		return obj.getPrice();
+	//	}
+	//}
 
 }

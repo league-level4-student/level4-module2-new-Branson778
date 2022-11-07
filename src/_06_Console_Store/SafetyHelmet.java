@@ -5,6 +5,7 @@ public class SafetyHelmet extends NonFood {
 	public SafetyHelmet() {
 		price = 29.99;
 		pieceCount=1;
+		item = "Safety Helmet";
 		
 	}
 	@Override
@@ -15,6 +16,10 @@ public class SafetyHelmet extends NonFood {
 	@Override
 	public int getTotalPieceCount() {
 		return pieceCount;
+	}
+	@Override
+	public String getItem() {
+		return item;
 	}
 
 }

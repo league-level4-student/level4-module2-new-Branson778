@@ -6,4 +6,5 @@ public abstract class NonFood {
     protected int pieceCount;
     public abstract double getPrice();
     public abstract int getTotalPieceCount();
+    public abstract String getItem();
 }

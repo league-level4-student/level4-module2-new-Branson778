@@ -3,7 +3,7 @@ package _06_Console_Store;
 public class ToolBox extends NonFood {
 
 	public ToolBox() {
-		price = 40.25;
+		price = 44.99;
 		pieceCount = 350;
 		item="Tool Box";
 	}
@@ -15,6 +15,10 @@ public class ToolBox extends NonFood {
 	@Override
 	public int getTotalPieceCount() {
 		return pieceCount;
+	}
+	@Override
+	public String getItem() {
+		return item;
 	}
 
 }
