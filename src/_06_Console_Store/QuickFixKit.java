@@ -1,5 +1,7 @@
 package _06_Console_Store;
 
+import javax.swing.JLabel;
+
 public class QuickFixKit extends NonFood {
    public QuickFixKit(){
 	   price = 45.99;
@@ -18,6 +20,10 @@ public class QuickFixKit extends NonFood {
 	@Override
 	public String getItem() {
 		return item;
+	}
+	public JLabel loadImage() {
+		return new JLabel(loadImage("quickfixkit2.png"));
+		
 	}
 
 }

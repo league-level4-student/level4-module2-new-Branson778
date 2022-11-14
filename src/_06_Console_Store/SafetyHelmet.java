@@ -1,5 +1,7 @@
 package _06_Console_Store;
 
+import javax.swing.JLabel;
+
 public class SafetyHelmet extends NonFood {
 
 	public SafetyHelmet() {
@@ -20,6 +22,10 @@ public class SafetyHelmet extends NonFood {
 	@Override
 	public String getItem() {
 		return item;
+	}
+	public JLabel loadImage() {
+		return new JLabel(loadImage("safetyhelmet2.png"));
+		
 	}
 
 }

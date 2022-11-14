@@ -57,7 +57,7 @@ public class ConsoleStore implements ActionListener {
 	//TODO Add Ternary Operators, Images, And Scanners
 	// To Add Scanners Make The Application Like a Beta And Use The Console To Message The User And Allow Them To Give Themselves More Money
 	// To Add Ternary Operators Simply Use The Input From The Scanner And Change It To Zero If The Money Is Illogical/Negative
-	//TODO Add Images By SHoing Them When Showing The Receipt
+	//TODO Add Images By Showing Them When Showing The Receipt
 	protected JFrame frame = new JFrame();
 	protected JPanel panel = new JPanel();
 	protected JPanel panel2 = new JPanel();
@@ -191,6 +191,15 @@ else {
 	}while(index<cart.size());
 	String formMoney = String.format("%.2f", money);
 	String formTotal = String.format("%.2f", total);
+	JFrame imageFrame = new JFrame();
+	JPanel imagePanel = new JPanel();		
+    imageFrame.add(imagePanel);
+    imageFrame.setVisible(true);
+    imageFrame.setTitle("Visual Cart");
+    for (int i = 0; i < cart.size(); i++) {
+		imagePanel.add(cart.get(i).loadImage());
+	}
+    imageFrame.pack();
 	printout= "Receipt\n"+printout+"Total Cost: "+formTotal+"\nRemaining Balance: "+formMoney+"\nAccount Name: "+name+"\nThank You For Shopping At Online Depot\nHave A Great Day!";
 	JOptionPane.showMessageDialog(null, printout);
 	cart.removeAll(cart);
@@ -219,16 +228,7 @@ else {
 		System.out.println("");
 		betaMoneyAdd();
 	}
-    @SuppressWarnings("rawtypes")
-    public static ImageIcon loadImage(String fileName) {
-        try {
-            return new ImageIcon(ImageIO
-                    .read(new Cart().getClass().getResourceAsStream("images/"+fileName)));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+  
 	//public double caclulateTax(NonFood obj) {
 	//	if(obj.getTotalPieceCount()>49) {
 	//	int rate = obj.getTotalPieceCount()/10;

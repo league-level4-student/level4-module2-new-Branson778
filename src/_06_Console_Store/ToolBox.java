@@ -1,5 +1,7 @@
 package _06_Console_Store;
 
+import javax.swing.JLabel;
+
 public class ToolBox extends NonFood {
 
 	public ToolBox() {
@@ -19,6 +21,10 @@ public class ToolBox extends NonFood {
 	@Override
 	public String getItem() {
 		return item;
+	}
+	public JLabel loadImage() {
+		return new JLabel(loadImage("toolbox2.png"));
+		
 	}
 
 }
